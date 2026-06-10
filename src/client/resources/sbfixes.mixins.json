@@ -1,0 +1,15 @@
+{
+	"required": true,
+	"package": "com.eclipse.sbf.mixin",
+	"compatibilityLevel": "JAVA_21",
+	"client": [
+		"MixinClientPlayerInteractionManager",
+		"MixinClientPlayNetworkHandler"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"overwrites": {
+		"requireAnnotations": true
+	}
+}

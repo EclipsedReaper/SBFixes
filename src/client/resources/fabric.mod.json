@@ -1,0 +1,34 @@
+{
+	"schemaVersion": 1,
+	"id": "sbfixes",
+	"version": "${version}",
+	"name": "SBFixes",
+	"description": "Fixes some annoying issues in Hypixel Skyblock",
+	"authors": [
+		"EclipsedReaper"
+	],
+	"contact": {
+		"homepage": "https://modrinth.com/mod/sbfixes",
+		"sources": "https://github.com/EclipsedReaper/NoMorePane"
+	},
+	"license": "GPL-2.0-or-later",
+	"icon": "assets/sbfixes/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"client": [
+			"com.eclipse.sbf.SBFixes"
+		]
+	},
+	"mixins": [
+		{
+			"config": "sbfixes.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.19.3",
+		"minecraft": "~1.21.11",
+		"java": ">=21",
+		"fabric-api": "*"
+	}
+}
