@@ -1,12 +1,12 @@
 package com.eclipse.sbf.gemstone;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.PaneBlock;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.world.ClientWorld;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.StainedGlassPaneBlock;
+import net.minecraft.client.Minecraft;
+import net.minecraft.core.BlockPos;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -22,29 +22,29 @@ public class PaneHandler {
     private static final Set<BlockPos> panes = new HashSet<>();
 
     public static void handlePanes() {
-        ClientWorld world = MinecraftClient.getInstance().world;
+        ClientLevel world = Minecraft.getInstance().level;
         if (world != null) {
             for (BlockPos pos : panes) {
                 if (!isPane(world.getBlockState(pos))) continue;
-                boolean xup = !world.getBlockState(pos.add(1, 0, 0)).isSolid();
-                boolean xdown = !world.getBlockState(pos.add(-1, 0, 0)).isSolid();
-                boolean zup = !world.getBlockState(pos.add(0, 0, 1)).isSolid();
-                boolean zdown = !world.getBlockState(pos.add(0, 0, -1)).isSolid();
+                boolean east = !world.getBlockState(pos.east()).isSolid();
+                boolean west = !world.getBlockState(pos.west()).isSolid();
+                boolean south = !world.getBlockState(pos.south()).isSolid();
+                boolean north = !world.getBlockState(pos.north()).isSolid();
                 BlockState newState;
-                if (xup && xdown && zup && zdown) {
+                if (east && west && south && north) {
                     newState = world.getBlockState(pos)
-                            .with(PaneBlock.NORTH, true)
-                            .with(PaneBlock.SOUTH, true)
-                            .with(PaneBlock.EAST, true)
-                            .with(PaneBlock.WEST, true);
+                            .setValue(StainedGlassPaneBlock.NORTH, true)
+                            .setValue(StainedGlassPaneBlock.SOUTH, true)
+                            .setValue(StainedGlassPaneBlock.EAST, true)
+                            .setValue(StainedGlassPaneBlock.WEST, true);
                 } else {
                     newState = world.getBlockState(pos)
-                            .with(PaneBlock.NORTH, !zdown)
-                            .with(PaneBlock.SOUTH, !zup)
-                            .with(PaneBlock.EAST, !xup)
-                            .with(PaneBlock.WEST, !xdown);
+                            .setValue(StainedGlassPaneBlock.NORTH, !north)
+                            .setValue(StainedGlassPaneBlock.SOUTH, !south)
+                            .setValue(StainedGlassPaneBlock.EAST, !east)
+                            .setValue(StainedGlassPaneBlock.WEST, !west);
                 }
-                world.setBlockState(pos, newState, 19);
+                world.setServerVerifiedBlockState(pos, newState, 19);
             }
             panes.clear();
         }
